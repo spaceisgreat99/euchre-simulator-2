@@ -15,6 +15,17 @@ public class Card {
         return value;
     }
 
+    public boolean equals(Card other) {
+        return (getSuit() == other.getSuit() && getValue() == other.getValue());
+    }
+
+    public static final Card[][] deck = {
+        {new Card(Suit.CLUBS, Value.ACE), new Card(Suit.CLUBS, Value.KING), new Card(Suit.CLUBS, Value.QUEEN), new Card(Suit.CLUBS, Value.JACK), new Card(Suit.CLUBS, Value.TEN), new Card(Suit.CLUBS, Value.NINE)},
+        {new Card(Suit.DIAMONDS, Value.ACE), new Card(Suit.DIAMONDS, Value.KING), new Card(Suit.DIAMONDS, Value.QUEEN), new Card(Suit.DIAMONDS, Value.JACK), new Card(Suit.DIAMONDS, Value.TEN), new Card(Suit.DIAMONDS, Value.NINE)},
+        {new Card(Suit.HEARTS, Value.ACE), new Card(Suit.HEARTS, Value.KING), new Card(Suit.HEARTS, Value.QUEEN), new Card(Suit.HEARTS, Value.JACK), new Card(Suit.HEARTS, Value.TEN), new Card(Suit.HEARTS, Value.NINE)},
+        {new Card(Suit.SPADES, Value.ACE), new Card(Suit.SPADES, Value.KING), new Card(Suit.SPADES, Value.QUEEN), new Card(Suit.SPADES, Value.JACK), new Card(Suit.SPADES, Value.TEN), new Card(Suit.SPADES, Value.NINE)}
+    };
+
     // Returns true iff A beats B
     public static boolean beats(Card A, Card B, Suit leadSuit, Suit trump) {
         Suit suitA = A.effectiveSuit(trump);

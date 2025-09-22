@@ -52,11 +52,12 @@ public class Simulator {
             }
 
             int winnerIndex = determineTrickWinner(trickCards, leadSuit, game.trump);
+            int winningPlayer = (leader + winnerIndex) % 4;
             System.out.println("Winner: " + trickCards.get(winnerIndex) + "\n--------------");
 
-            tricksWon[winnerIndex]++;
+            tricksWon[winningPlayer]++;
 
-            leader = (leader + winnerIndex) % 4;
+            leader = winningPlayer;
         }
 
         // Combine caller and partner's tricks and return result
