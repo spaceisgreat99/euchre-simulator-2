@@ -2,6 +2,8 @@ import java.util.*;
 
 public class Simulator {
 
+    private final static boolean VERBOSE = false;
+
     // main public method which simulates multiple games and averages the number of points scored by the caller's team
     public static double simulateGames(GameSetup game, int n) {
         double sum = 0;
@@ -40,7 +42,9 @@ public class Simulator {
                     trickCards,
                     playedCards
                 );
-                System.out.println("Card played: " + chosen.toString());
+                if(VERBOSE) {
+                    System.out.println("Card played: " + chosen.toString());
+                }
 
                 hand.remove(chosen);
                 trickCards.add(chosen);
@@ -53,7 +57,9 @@ public class Simulator {
 
             int winnerIndex = determineTrickWinner(trickCards, leadSuit, game.trump);
             int winningPlayer = (leader + winnerIndex) % 4;
-            System.out.println("Winner: " + trickCards.get(winnerIndex) + "\n--------------");
+            if (VERBOSE) {
+                System.out.println("Winner: " + trickCards.get(winnerIndex) + "\n--------------");
+            }
 
             tricksWon[winningPlayer]++;
 
@@ -179,14 +185,14 @@ public class Simulator {
                 if (leader.getValue() == Value.ACE && leader.effectiveSuit(trump) != trump
                     && second.effectiveSuit(trump) != trump
                     && (playedCards.size() / 4) < 2) {
-                    return worstCard(hand, leadSuit, trump);
+                    return worstCardOrLowestTrump(hand, leadSuit, trump);
                 }
                 // Trump the trick if we can take it
                 Card highestTrump = highestTrump(hand, trump);
                 if (Card.beats(highestTrump, currentBest, leadSuit, trump)) {
                     return highestTrump;
                 }
-                return worstCard(hand, leadSuit, trump);
+                return worstCardOrLowestTrump(hand, leadSuit, trump);
             } else {
                 // Attempt to short suit
                 for (Card c : hand) {
@@ -223,8 +229,10 @@ public class Simulator {
             } else if (hasSuit(hand, trump, trump)) {
                 // Try to take the trick with trump
                 Card lowestWinningTrump = lowestWinningTrump(hand, trump, currentBest, leadSuit);
-                if (lowestWinningTrump != null) return lowestWinningTrump;
-                return worstCard(hand, leadSuit, trump);
+                if (lowestWinningTrump != null) {
+                    return lowestWinningTrump;
+                }
+                return worstCardOrLowestTrump(hand, leadSuit, trump);
             } else {
                 // Attempt to short suit
                 for (Card c : hand) {
@@ -326,6 +334,30 @@ public class Simulator {
             .filter(c -> c.effectiveSuit(trump) != trump && c.effectiveSuit(trump) != leadSuit)
             .min((a, b) -> a.normalStrength() - b.normalStrength())
             .orElse(null);
+    }
+
+    private static Card worstCardOrLowestTrump(List<Card> hand, Suit leadSuit, Suit trump) {
+        Card wc = worstCard(hand, leadSuit, trump);
+        if (wc == null) {
+            wc = lowestTrump(hand, trump);
+        }
+        return wc;
+    }
+
+    public static List<Card> replaceCard(Card card, List<Card> hand, Suit trump) {
+        // Attempt to short suit
+        for (Card c : hand) {
+            Suit s = c.effectiveSuit(trump);
+            if (s != trump && countSuit(hand, s, trump) == 1 && c.getValue() != Value.ACE) {
+                hand.remove(c);
+                hand.add(card);
+                return hand;
+            }
+        }
+        // Otherwise drop worst card
+        hand.remove(worstCardOrLowestTrump(hand, trump, trump));
+        hand.add(card);
+        return hand;
     }
 
 }

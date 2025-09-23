@@ -77,7 +77,7 @@ public class Card {
 
     // Next two methods help handle left bower
     public Suit effectiveSuit(Suit trump) {
-        if (getValue() == Value.JACK) {
+        if (trump != null && getValue() == Value.JACK) {
             if (getSuit() == trump) {
                 return trump;
             }

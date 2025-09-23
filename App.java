@@ -11,20 +11,18 @@ public class App {
         // Define cards and game setup
         // TODO: make this responsive to player input
         List<Card> hand = new ArrayList<>();
-        hand.add(Card.deck[0][3]);
         hand.add(Card.deck[1][1]);
-        hand.add(Card.deck[3][3]);
-        hand.add(Card.deck[2][2]);
-        hand.add(Card.deck[2][0]);
+        hand.add(Card.deck[1][3]);
+        hand.add(Card.deck[3][5]);
+        hand.add(Card.deck[3][4]);
+        hand.add(Card.deck[3][1]);
 
-        Card cardUp = Card.deck[0][0];
-        int caller = 0;
-        Suit trump = Suit.SPADES;
-        GameSetup setup = GameSetup.generateGameSetup(hand, cardUp, caller, trump);
+        Card cardUp = Card.deck[2][0];
+        int position = 0; // Position 0 is dealer
 
         // Run simulations
-        double result = Simulator.simulateGames(setup, 1);
+        double[] result = MultiGame.tryAllTrump(hand, position, cardUp, 1000);
         // Report results
-        System.out.println("Result: " + result);
+        System.out.println(MultiGame.formatResult(result));
     }
 }

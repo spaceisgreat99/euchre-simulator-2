@@ -26,7 +26,8 @@ public class GameSetup {
         this.pickedUp = cardUp.getSuit() == trump;
     }
 
-    public static GameSetup generateGameSetup(List<Card> hand, Card cardUp, int caller, Suit trump) {
+    public static GameSetup generateGameSetup(List<Card> hand, int position, Card cardUp, Suit trump) {
+        // Position 0 is dealer
         Random rand = new Random();
         List<Card> deck = new ArrayList<>();
         for(Card[] cards: Card.deck) {
@@ -37,7 +38,6 @@ public class GameSetup {
             }
         }
         List<List<Card>> hands = new ArrayList<>();
-        hands.add(hand);
         for (int i = 0; i < 3; i++) {
             List<Card> newHand = new ArrayList<>();
             for (int j = 0; j < 5; j++) {
@@ -45,6 +45,13 @@ public class GameSetup {
             }
             hands.add(newHand);
         }
-        return new GameSetup(hands, cardUp, caller, trump);
+        hands.add(position % 4, hand);
+
+        // Handle possibility of cardUp being picked up
+        if (cardUp.getSuit() == trump) {
+            hands.set(0, Simulator.replaceCard(cardUp, hands.get(0), trump));
+        }
+
+        return new GameSetup(hands, cardUp, position, trump);
     }
 }
