@@ -3,22 +3,15 @@ import java.util.List;
 
 
 
-public class App {
+public class EuchreSimulator {
     public static void main(String[] args) {
-        // Get player input somehow
-        // TODO: implement this
-
-        // Define cards and game setup
-        // TODO: make this responsive to player input
+        // DEFINE CARDS AND GAME SETUP HERE
         List<Card> hand = new ArrayList<>();
-        hand.add(Card.deck[1][1]);
-        hand.add(Card.deck[1][3]);
-        hand.add(Card.deck[3][5]);
-        hand.add(Card.deck[3][4]);
-        hand.add(Card.deck[3][1]);
+        hand.addAll(Card.parseHand("9s", "10h", "ac", "kc", "qd"));
 
-        Card cardUp = Card.deck[2][0];
+        Card cardUp = Card.parseCard("10d");
         int position = 0; // Position 0 is dealer
+        // DEFINE CARDS AND GAME SETUP ABOVE
 
         // Run simulations
         double[] result = MultiGame.tryAllTrump(hand, position, cardUp, 1000);

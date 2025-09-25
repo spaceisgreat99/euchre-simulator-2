@@ -1,3 +1,7 @@
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Card {
     private final Suit suit;
     private final Value value;
@@ -95,6 +99,36 @@ public class Card {
             case SPADES: return Suit.CLUBS;
         }
         throw new IllegalArgumentException("Invalid suit");
+    }
+
+    public static List<Card> parseHand(String c1, String c2, String c3, String c4, String c5) {
+        List<Card> result = new ArrayList<>();
+        result.add(parseCard(c1));
+        result.add(parseCard(c2));
+        result.add(parseCard(c3));
+        result.add(parseCard(c4));
+        result.add(parseCard(c5));
+        return result;
+    }
+
+    public static Card parseCard(String c) {
+        Suit suit = Suit.SPADES;
+        Value value = Value.NINE;
+        switch (c.charAt(0)) {
+            case '9': value = Value.NINE; break;
+            case '1': value = Value.TEN; break;
+            case 'j': value = Value.JACK; break;
+            case 'q': value = Value.QUEEN; break;
+            case 'k': value = Value.KING; break;
+            case 'a': value = Value.ACE; break;
+        }
+        switch (c.charAt(c.length() - 1)) {
+            case 'c': suit = Suit.CLUBS; break;
+            case 'd': suit = Suit.DIAMONDS; break;
+            case 'h': suit = Suit.HEARTS; break;
+            case 's': suit = Suit.SPADES; break;
+        }
+        return new Card(suit, value);
     }
 
     @Override
