@@ -1,4 +1,4 @@
-# Euchre Simulator 0.2
+# Euchre Simulator 0.2.1
 
 Currently there is no UI, but the variables to change are clearly marked in EuchreSimulator.java.
 
@@ -10,10 +10,9 @@ Note that for the case where trump is the same as the card up in the middle, it 
 
 ## Additional Info:
 
-Gameplay follows a rule-based implementation which I made based on rules I use while playing. I believe it almost always plays the correct card, but it certainly is not a perfect simulator. One way the program mitigates this is by simulating with different random hands each time.
+Gameplay follows a rule-based implementation which I made based on rules I use while playing. I believe it almost always plays the correct card, but it certainly is not a perfect simulator. One way the program mitigates this is by simulating with many different random hands.
 
 ## Future Plans:
 
-- Add calculations for going alone
 - Add a 'no trump' option
 - Improve rule-based gameplay implementation
