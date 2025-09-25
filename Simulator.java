@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Simulator {
 
-    private final static boolean VERBOSE = false;
+    private final static boolean VERBOSE = false; // Mainly for development - set to true to see each card that gets played
 
     // main public method which simulates multiple games and averages the number of points scored by the caller's team
     public static double simulateGames(GameSetup game, int n) {
@@ -24,6 +24,9 @@ public class Simulator {
     private static int simulateGame(GameSetup game) {
         int[] tricksWon = new int[4];
         int leader = 1; // Player 2, index 1
+        if (game.caller == 3 && game.alone) {
+            leader = 2; // If player 4 is going alone, player 2 cannot lead, so player 3 does instead
+        }
         List<Card> playedCards = new ArrayList<>();
 
         for (int trick = 0; trick < 5; trick++) {
@@ -70,7 +73,7 @@ public class Simulator {
         int partner = (game.caller + 2) % 4;
         int tricksTaken = tricksWon[game.caller] + tricksWon[partner];
         if (tricksTaken == 5) {
-            return 2;
+            return game.alone ? 4 : 2;
         } else if (tricksTaken == 0) {
             return -4;
         } else if (tricksTaken > 2) {

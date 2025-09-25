@@ -31,7 +31,7 @@ public class Card {
     };
 
     // Returns true iff A beats B
-    public static boolean beats(Card A, Card B, Suit leadSuit, Suit trump) {
+    public static boolean beats(Card A, Card B, Suit leadSuit, Suit trump) {        
         Suit suitA = A.effectiveSuit(trump);
         Suit suitB = B.effectiveSuit(trump);
 

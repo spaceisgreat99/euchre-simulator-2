@@ -26,7 +26,7 @@ public class GameSetup {
         this.pickedUp = cardUp.getSuit() == trump;
     }
 
-    public static GameSetup generateGameSetup(List<Card> hand, int position, Card cardUp, Suit trump) {
+    public static GameSetup generateGameSetup(List<Card> hand, int position, Card cardUp, Suit trump, boolean alone) {
         // Position 0 is dealer
         Random rand = new Random();
         List<Card> deck = new ArrayList<>();
@@ -52,6 +52,22 @@ public class GameSetup {
             hands.set(0, Simulator.replaceCard(cardUp, hands.get(0), trump));
         }
 
-        return new GameSetup(hands, cardUp, position, trump);
+        // If a player is going alone, convert all of their partner's cards to non trump 9s so they can't take any tricks
+        if (alone) {
+            List<Card> dummyHand = new ArrayList<>();
+            if (trump == Suit.CLUBS) {
+                for (int i = 0; i < 5; i++) {
+                    dummyHand.add(new Card(Suit.DIAMONDS, Value.NINE));
+                }
+            }
+            else {
+                for (int i = 0; i < 5; i++) {
+                    dummyHand.add(new Card(Suit.CLUBS, Value.NINE));
+                }
+            }
+            hands.set((position + 2) % 4, dummyHand);
+        }
+
+        return new GameSetup(hands, cardUp, position, trump, alone);
     }
 }
